@@ -73,8 +73,14 @@ monster::FrankList<value_type>::FrankList(std::initializer_list<value_type> init
     }    
 }
 
-    // template <typename input_iterator>
-    // FrankList(input_iterator f, input_iterator l); //O(n)
+template <typename value_type>
+template <typename input_iterator>
+monster::FrankList<value_type>::FrankList(input_iterator f, input_iterator l)
+{
+    for (; f != l; ++f) {
+        this->push_back(*f);
+    }
+}
 
 template <typename value_type> 
 monster::FrankList<value_type>::Node::Node()
@@ -286,21 +292,154 @@ typename monster::FrankList<value_type>::reference monster::FrankList<value_type
     return ascHead->data;
 }  
 
+template <typename value_type> 
+const monster::FrankList<value_type>& monster::FrankList<value_type>::operator=(const FrankList<value_type>& rhv) 
+{
+    if (this != &rhv) {
+        if (head) {
+            this->clear();
+        }
 
-    // const FrankList<value_type>& operator=(const FrankList<value_type>& rhv); //O(n)
-    // const FrankList<value_type>& operator=(FrankList<value_type>&& rhv); //O(n)
-    // const FrankList<value_type>& operator=(std::initializer_list<value_type> init); //O(n)
+        this->head = nullptr;
+        this->tail = nullptr;
+        this->ascHead = nullptr;
+        this->descHead = nullptr;
 
-    // bool operator==(const FrankList<value_type>& rhv) const; //O(n)
-    // bool operator!=(const FrankList<value_type>& rhv) const; //O(n)
-    // bool operator<(const FrankList<value_type>& rhv) const; //O(n)
-    // bool operator<=(const FrankList<value_type>& rhv) const; //O(n)
-    // bool operator>(const FrankList<value_type>& rhv) const; //O(n)
-    // bool operator>=(const FrankList<value_type>& rhv) const; //O(n)
+        for (Node* tmp = rhv.head; tmp != nullptr; tmp = tmp->next) {
+            this->push_back(tmp->data);
+        } 
+    }
+
+    return *this;
+}
+
+template <typename value_type>
+const monster::FrankList<value_type>& monster::FrankList<value_type>::operator=(FrankList<value_type>&& rhv)
+{
+    if (this != &rhv) {
+        if (head) {
+            this->clear();
+        }
+
+        this->head = rhv.head;
+        this->tail = rhv.tail;
+        this->ascHead = rhv.ascHead;
+        this->descHead = rhv.descHead;
+
+        rhv.head = nullptr;
+        rhv.tail = nullptr;
+        rhv.ascHead = nullptr;
+        rhv.descHead = nullptr;
+    }
+
+    return *this;
+}
+
+template <typename value_type> 
+const monster::FrankList<value_type>& monster::FrankList<value_type>::operator=(std::initializer_list<value_type> init) 
+{
+    if (head) {
+        this->clear();
+    }
+
+    for (auto it = init.begin(); it != init.end(); ++it) {
+        this->push_back(*it);
+    }  
+
+    return *this;
+}   
+
+template <typename value_type> 
+bool monster::FrankList<value_type>::operator==(const FrankList<value_type>& rhv) const
+{
+    Node* tmp_this = this->head;
+    Node* tmp_rhv = rhv.head;
+
+    while (tmp_rhv && tmp_this) {
+        if (tmp_rhv->data != tmp_this->data) {
+            return false;
+        }
+
+        tmp_rhv = tmp_rhv->next;
+        tmp_this = tmp_this->next;
+    }    
+
+    return (tmp_rhv == nullptr && tmp_this == nullptr);
+}
+
+template <typename value_type> 
+bool monster::FrankList<value_type>::operator!=(const FrankList<value_type>& rhv) const
+{
+    return !this->operator==(rhv);
+}
+
+template <typename value_type> 
+bool monster::FrankList<value_type>::operator<(const FrankList<value_type>& rhv) const
+{
+    Node* tmp_this = this->head;
+    Node* tmp_rhv = rhv.head;
+
+    while (tmp_rhv && tmp_this) {
+        if (tmp_rhv->data >= tmp_this->data) {
+            return false;
+        }
+
+        tmp_rhv = tmp_rhv->next;
+        tmp_this = tmp_this->next;
+    } 
+
+    return (tmp_rhv && !tmp_this);
+}
+
+template <typename value_type> 
+bool monster::FrankList<value_type>::operator>(const FrankList<value_type>& rhv) const
+{
+    Node* tmp_this = this->head;
+    Node* tmp_rhv = rhv.head;
+
+    while (tmp_rhv && tmp_this) {
+        if (tmp_rhv->data <= tmp_this->data) {
+            return false;
+        }
+
+        tmp_rhv = tmp_rhv->next;
+        tmp_this = tmp_this->next;
+    } 
+
+    return (!tmp_rhv && tmp_this);
+}
+
+template <typename value_type> 
+bool monster::FrankList<value_type>::operator>=(const FrankList<value_type>& rhv) const
+{
+    return !this->operator<();
+}
+
+template <typename value_type> 
+bool monster::FrankList<value_type>::operator<=(const FrankList<value_type>& rhv) const
+{
+    return !this->operator>();
+}
+
 //-----------------------------------------------------------------------------------------
- 
- //   size_type remove(const_reference val); //O(n)
+// template <typename value_type> 
+// typename monster::FrankList<value_type>::size_type monster::FrankList<value_type>::remove(const_reference val)
+// {
+//     if (val == head->data) {
+//         this->pop_front;
+//     } else if (val == tail->data) {
+//         this->pop_back();
+//     }
 
+//     Node* tmp = head;
+//     while (tmp) {
+//         if (val == tmp->data) {
+//             monster::<value_type>::iterator it(tmp);
+//             this->erase(it);
+//         }
+//         tmp = tmp->next;
+//     }
+// }
 //-----------------------------------------------------------------------------------------
 template <typename value_type>
 void monster::FrankList<value_type>::reverse()
@@ -410,4 +549,5 @@ void monster::FrankList<value_type>::put_in_sorted_order(Node* ptr)
     }
 }
 
+#include "iterators.hpp"
 #endif // _FRANKLIST_HPP__
