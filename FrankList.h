@@ -59,9 +59,9 @@ public:
         const_pointer operator->() const; //O(1)
 
         const const_iterator& operator++(); //O(1)
-        const const_iterator operator++(value_type); //O(1)
+        const const_iterator operator++(int); //O(1)
         const const_iterator& operator--(); //O(1)
-        const const_iterator operator--(value_type); //O(1)
+        const const_iterator operator--(int); //O(1)
 
     protected:
         explicit const_iterator(Node* ptr); //O(1)
@@ -98,9 +98,9 @@ public:
         const_pointer operator->() const; //O(1)
 
         const const_reverse_iterator& operator++(); //O(1)
-        const const_reverse_iterator operator++(value_type); //O(1)
+        const const_reverse_iterator operator++(int); //O(1)
         const const_reverse_iterator& operator--(); //O(1)
-        const const_reverse_iterator operator--(value_type); //O(1)
+        const const_reverse_iterator operator--(int); //O(1)
 
     protected:
         explicit const_reverse_iterator(Node* ptr); //O(1)
@@ -136,9 +136,9 @@ public:
         const_pointer operator->() const; //O(1)
 
         const const_asc_iterator& operator++(); //O(1)
-        const const_asc_iterator operator++(value_type); //O(1)
+        const const_asc_iterator operator++(int); //O(1)
         const const_asc_iterator& operator--(); //O(1)
-        const const_asc_iterator operator--(value_type); //O(1)
+        const const_asc_iterator operator--(int); //O(1)
 
     protected:
         explicit const_asc_iterator(Node* ptr); //O(1)
@@ -174,9 +174,9 @@ public:
         const_pointer operator->() const; //O(1)
 
         const const_desc_iterator& operator++(); //O(1)
-        const const_desc_iterator operator++(value_type); //O(1)
+        const const_desc_iterator operator++(int); //O(1)
         const const_desc_iterator& operator--(); //O(1)
-        const const_desc_iterator operator--(value_type); //O(1)
+        const const_desc_iterator operator--(int); //O(1)
 
     protected:
         explicit const_desc_iterator(Node* ptr); //O(1)
@@ -212,9 +212,9 @@ public:
         const_pointer operator->() const; //O(1)
 
         const const_multi_iterator& operator++(); //O(1)
-        const const_multi_iterator operator++(value_type); //O(1)
+        const const_multi_iterator operator++(int); //O(1)
         const const_multi_iterator& operator--(); //O(1)
-        const const_multi_iterator operator--(value_type); //O(1)
+        const const_multi_iterator operator--(int); //O(1)
 
         void chmod(); //O(1)
     protected:
@@ -252,9 +252,9 @@ public:
         const_pointer operator->() const; //O(1)
 
         const const_multi_reverse_iterator& operator++(); //O(1)
-        const const_multi_reverse_iterator operator++(value_type); //O(1)
+        const const_multi_reverse_iterator operator++(int); //O(1)
         const const_multi_reverse_iterator& operator--(); //O(1)
-        const const_multi_reverse_iterator operator--(value_type); //O(1)
+        const const_multi_reverse_iterator operator--(int); //O(1)
 
 
         void chmod(); //O(1)
@@ -288,7 +288,7 @@ public:
     FrankList(FrankList<value_type>&& rhv); //O(1)
     FrankList(std::initializer_list<value_type> init); //O(n)
     template <typename input_iterator>
-    FrankList(); //O(n)
+    FrankList(input_iterator f, input_iterator l); //O(n)
     ~FrankList();
 
 public:
